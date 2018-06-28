@@ -30,6 +30,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,6 +64,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @BindView(R.id.password) EditText mPasswordView;
     @BindView(R.id.login_progress) View mProgressView;
     @BindView(R.id.login_form) View mLoginFormView;
+
+    // String Resources.
+    @BindString(R.string.error_invalid_email) String mErrorInvalidEmail;
+    @BindString(R.string.error_invalid_password) String mErrorInvalidPassword;
+    @BindString(R.string.error_incorrect_password) String mErrorIncorrectPassword;
+    @BindString(R.string.error_field_required) String mErrorFieldRequired;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,18 +163,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(mErrorInvalidPassword);
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.setError(mErrorFieldRequired);
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.setError(mErrorInvalidEmail);
             focusView = mEmailView;
             cancel = true;
         }
@@ -330,7 +337,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(mErrorIncorrectPassword);
                 mPasswordView.requestFocus();
             }
         }
